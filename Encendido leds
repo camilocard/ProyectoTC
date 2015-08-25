@@ -1,0 +1,89 @@
+#include    <16f877.h>
+#Use        delay(clock=4000000)
+#Fuses      XT,NOWDT,NOPROTECT,NODEBUG,BROWNOUT,NOLVP,NOCPD
+#Define     rojo   pin_D0 
+#Define     pulsador  pin_A0
+
+int         dato[4],i;
+#zero_ram
+#rom        0x2100={0x23}
+#rom        0x2101={0x44}
+
+
+
+Void secuencia1()
+{
+   for(i=0;i<10;i++)
+   {
+      Output_high(Pin_D1);
+      Delay_ms(100);
+      output_low(Pin_D1);
+      Delay_ms(100);
+   }         
+}
+
+
+Void secuencia()
+{
+   for (i=0;i<10;i++)
+   {
+
+      Output_high(Pin_D0);
+      Delay_ms(100);
+      output_low(rojo);
+      Delay_ms(100);
+
+   }
+}   
+
+
+
+Void main()
+{
+   Set_tris_A(0x0F);/*00001111
+   RA0      PULSADOR     PIN 02
+   RA1      SENSOR       PIN 03
+   RA2      FREE         PIN 04
+   RA3      FREE         PIN 05
+   RA4      FREE         PIN 06
+   RA5      FREE         PIN 07        */
+
+   Set_tris_B(0x00);/*00000000
+   RB0      PULSADOR     PIN 33
+   RB1      SENSOR       PIN 34
+   RB2      FREE         PIN 35
+   RB3      FREE         PIN 36
+   RB4      FREE         PIN 37
+   RB5      FREE         PIN 38
+   RB6      FREE         PIN 39        
+   RB7      FREE         PIN 40        
+    */
+        
+//SETUP_TIMER_1(T1_DISABLED);        
+//SETUP_TIMER_2(T2_DISABLED,0,1); 
+//SETUP_COMPARATOR_(nc_nc_nc_nc);
+   Set_tris_D(0x00);/*00000000 
+
+*/
+
+
+/*
+for (;;){
+
+Output_high(Pin_D0);
+Delay_ms(1000);
+output_low(rojo);
+Delay_ms(1000);
+*/
+
+   if(!input(pulsador))
+   {
+      secuencia();
+   }
+   else
+   {
+      secuencia1();
+   }
+   Delay_ms(500);
+   reset_cpu();
+} 
